@@ -1,8 +1,10 @@
 export class LinkedAbortController extends AbortController {
-  constructor(outerAbortSignal?: AbortSignal) {
+  constructor(...outerAbortSignals: (AbortSignal | undefined)[]) {
     super();
-    outerAbortSignal?.addEventListener('abort', () => {
-      this.abort(outerAbortSignal.reason);
+    outerAbortSignals.forEach((outerAbortSignal) => {
+      outerAbortSignal?.addEventListener('abort', () => {
+        this.abort(outerAbortSignal.reason);
+      });
     });
   }
 }
