@@ -1,11 +1,19 @@
 # LinkedAbortController    
 
+Same as AbortController but with sugar for linking outer abort signals  
+
 ```ts
 export class LinkedAbortController extends AbortController {
-  constructor(outerAbortSignal?: AbortSignal) {
+  constructor(...abortSignals: (AbortSignal | undefined)[]) {
     super();
-    outerAbortSignal?.addEventListener('abort', () => {
-      this.abort(outerAbortSignal.reason);
+    this.link(...abortSignals);
+  }
+
+  link(...abortSignals: (AbortSignal | undefined)[]) {
+    abortSignals.forEach((abortSignal) => {
+      abortSignal?.addEventListener('abort', () => {
+        this.abort(abortSignal.reason);
+      });
     });
   }
 }
