@@ -1,1 +1,1 @@
-export * from './linked-abort-controller';
+export * from './linked-abort-controller.js';
